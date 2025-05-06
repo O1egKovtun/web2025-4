@@ -1,0 +1,42 @@
+const { Command } = require('commander');
+const fs = require('fs');
+const http = require('http');
+const path = require('path');
+
+const program = new Command();
+
+program
+  .requiredOption('-h, --host <host>', 'server host')
+  .requiredOption('-p, --port <port>', 'server port')
+  .requiredOption('-i, --input <path>', 'path to JSON input file');
+
+program.parse(process.argv);
+
+const options = program.opts();
+
+// Перевірка існування файлу
+if (!fs.existsSync(options.input)) {
+  console.error("Cannot find input file");
+  process.exit(1);
+}
+
+// Зчитування JSON
+const rawData = fs.readFileSync(options.input, 'utf-8');
+let jsonData;
+try {
+  jsonData = JSON.parse(rawData);
+} catch (e) {
+  console.error("Invalid JSON file format");
+  process.exit(1);
+}
+
+// Створення сервера
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+  res.end(JSON.stringify(jsonData, null, 2));
+});
+
+// Запуск сервера
+server.listen(options.port, options.host, () => {
+  console.log(`Server running at http://${options.host}:${options.port}/`);
+});
