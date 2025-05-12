@@ -1,0 +1,16 @@
+[
+  {
+    "r030": 840,
+    "txt": "US Dollar",
+    "rate": 38.5,
+    "cc": "USD",
+    "exchangedate": "12.05.2025"
+  },
+  {
+    "r030": 978,
+    "txt": "Euro",
+    "rate": 41.1,
+    "cc": "EUR",
+    "exchangedate": "12.05.2025"
+  }
+]
